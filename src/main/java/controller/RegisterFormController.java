@@ -1,8 +1,16 @@
 package controller;
 
+import db.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import model.User;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class RegisterFormController {
 
@@ -19,8 +27,30 @@ public class RegisterFormController {
     private TextField txtUserName;
 
     @FXML
-    void btnRegisterOnAction(ActionEvent event) {
-        String SQL="INSERT INTO users (username,email,password) VALUES(?,?,?)";
+    void btnRegisterOnAction(ActionEvent event) throws SQLException {
+        String SQL = "INSERT INTO users (username,email,password) VALUES(?,?,?)";
+
+        if (txtPassword.getText().equals(txtCPassword.getText())) {
+
+            Connection connection = DBConnection.getInstance().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM users WHERE email=" + "'" + txtEmail.getText() + "'");
+
+            if (!resultSet.next()) {
+                User user = new User(txtUserName.getText(), txtEmail.getText(), txtPassword.getText());
+
+                PreparedStatement psTm = connection.prepareStatement(SQL);
+                psTm.setString(1,txtUserName.getText());
+                psTm.setString(2,txtEmail.getText());
+                psTm.setString(3,txtPassword.getText());
+
+                psTm.executeUpdate();
+
+            }else {
+                new Alert(Alert.AlertType.ERROR, "User found!").show();
+            }
+        }else {
+            new Alert(Alert.AlertType.ERROR, "Check your Password!!!").show();
+        }
     }
 
 }
