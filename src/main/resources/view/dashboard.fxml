@@ -8,22 +8,27 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashBoardFormController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0a2d4d" height="400.0" stroke="BLACK" strokeType="INSIDE" width="176.0" />
-      <JFXButton layoutX="12.0" layoutY="113.0" onAction="#btnCustomerFormOnAction" style="-fx-background-color: #E5E5E5;" text="Customer Form">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0a2d4d" height="418.0" stroke="BLACK" strokeType="INSIDE" width="176.0" />
+      <JFXButton layoutX="12.0" layoutY="71.0" onAction="#btnCustomerFormOnAction" style="-fx-background-color: #E5E5E5;" text="Customer Form">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton layoutX="12.0" layoutY="176.0" onAction="#btnItemFormOnAction" prefHeight="39.0" prefWidth="153.0" style="-fx-background-color: #E5E5E5;" text="Item Form">
+      <JFXButton layoutX="12.0" layoutY="134.0" onAction="#btnItemFormOnAction" prefHeight="39.0" prefWidth="153.0" style="-fx-background-color: #E5E5E5;" text="Item Form">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </JFXButton>
-      <JFXButton layoutX="12.0" layoutY="239.0" onAction="#btnOrderFormOnAction" prefHeight="39.0" prefWidth="153.0" style="-fx-background-color: #E5E5E5;" text="Order Form">
+      <JFXButton layoutX="12.0" layoutY="197.0" onAction="#btnOrderFormOnAction" prefHeight="39.0" prefWidth="153.0" style="-fx-background-color: #E5E5E5;" text="Order Form">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </JFXButton>
-      <AnchorPane fx:id="loadFormContent" layoutX="186.0" layoutY="8.0" prefHeight="384.0" prefWidth="405.0" />
+      <AnchorPane fx:id="loadFormContent" layoutX="186.0" layoutY="8.0" prefHeight="410.0" prefWidth="640.0" />
+      <JFXButton layoutX="12.0" layoutY="257.0" onAction="#btnRegisterFormOnAction" prefHeight="39.0" prefWidth="153.0" style="-fx-background-color: #E5E5E5;" text="Register New User">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>
