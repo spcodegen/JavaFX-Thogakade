@@ -36,10 +36,6 @@ public class CustomerController implements CustomerService{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM customer");
             while (resultSet.next()) {
-                System.out.println(resultSet.getString(1));
-                System.out.println(resultSet.getString(2));
-                System.out.println(resultSet.getString(3));
-                System.out.println(resultSet.getString(4));
 
                 customerArrayList.add(new Customer(
                         resultSet.getString(1),
@@ -48,8 +44,6 @@ public class CustomerController implements CustomerService{
                         resultSet.getDouble(4)
                 ));
             }
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
