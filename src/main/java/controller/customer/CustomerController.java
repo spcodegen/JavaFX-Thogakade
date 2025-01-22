@@ -2,7 +2,7 @@ package controller.customer;
 
 import db.DBConnection;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
+
 import javafx.collections.ObservableList;
 import model.Customer;
 
@@ -13,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerController implements CustomerService{
+public class CustomerController implements CustomerService {
 
     @Override
     public boolean addCustomer(Customer customer) {
@@ -27,7 +27,19 @@ public class CustomerController implements CustomerService{
 
     @Override
     public Customer searchCustomer(String id) {
-        return null;
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM customer WHERE id=" + "'" + id + "'");
+            resultSet.next();
+            return new Customer(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getDouble(4)
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -53,14 +65,14 @@ public class CustomerController implements CustomerService{
         return customerArrayList;
     }
 
-    public ObservableList<String> getCustomerIds(){
+    public ObservableList<String> getCustomerIds() {
         List<Customer> customerList = getAll();
-        ObservableList<String> custoObservableList = FXCollections.observableArrayList();
+        ObservableList<String> customerObservableList = FXCollections.observableArrayList();
 
         customerList.forEach(customer -> {
-            custoObservableList.add(customer.getId());
+            customerObservableList.add(customer.getId());
         });
-        return custoObservableList;
+        return customerObservableList;
     }
 
     @Override

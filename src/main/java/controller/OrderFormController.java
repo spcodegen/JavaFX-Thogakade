@@ -3,10 +3,12 @@ package controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import controller.customer.CustomerController;
+import controller.item.Item;
+import controller.item.ItemController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +25,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
+
 import java.util.ResourceBundle;
 
 public class OrderFormController implements Initializable {
@@ -86,6 +88,36 @@ public class OrderFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         getTimeAndTime();
         loadCustomerIds();
+        loadItemCodes();
+
+        cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null) {
+                searchCustomerData(newValue.toString());
+            }
+        });
+
+        cmbItemCode.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if (newValue!=null){
+                searchItemData(newValue.toString());
+            }
+        });
+    }
+
+    private void searchItemData(String itemCode) {
+        Item item = new ItemController().searchItem(itemCode);
+        txtDescription.setText(item.getDescription());
+        txtStock.setText(item.getStock().toString());
+        txtPrice.setText(item.getUnitPrice().toString());
+    }
+
+    private void loadItemCodes() {
+        cmbItemCode.setItems(new ItemController().getItemCodes());
+    }
+
+    private void searchCustomerData(String customerId) {
+        Customer customer = new CustomerController().searchCustomer(customerId);
+        txtName.setText(customer.getName());
+        txtAddress.setText(customer.getAddress());
     }
 
     @FXML
@@ -111,7 +143,7 @@ public class OrderFormController implements Initializable {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> {
                     LocalTime now = LocalTime.now();
-                    lblTime.setText(now.getHour()+":"+ now.getMinute()+":"+ now.getSecond());
+                    lblTime.setText(now.getHour() + ":" + now.getMinute() + ":" + now.getSecond());
                 }),
                 new KeyFrame(Duration.seconds(1))
         );
@@ -120,11 +152,8 @@ public class OrderFormController implements Initializable {
 
     }
 
-    private void loadCustomerIds(){
+    private void loadCustomerIds() {
         ObservableList<String> customerIds = new CustomerController().getCustomerIds();
         cmbCustomerId.setItems(customerIds);
     }
-
-
-
 }
