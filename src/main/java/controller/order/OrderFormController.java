@@ -1,4 +1,4 @@
-package controller;
+package controller.order;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -121,7 +121,7 @@ public class OrderFormController implements Initializable {
         txtPrice.setText(item.getUnitPrice().toString());
     }
 
-    private void loadItemCodes() {
+    private void loadItemCodes()  {
         cmbItemCode.setItems(new ItemController().getItemCodes());
     }
 
@@ -157,7 +157,7 @@ public class OrderFormController implements Initializable {
     }
 
     @FXML
-    void btnPlaceOrderOnAction(ActionEvent event) {
+    void btnPlaceOrderOnAction(ActionEvent event) { 
 
     }
 
