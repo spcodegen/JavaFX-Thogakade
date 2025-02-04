@@ -4,6 +4,7 @@ import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import model.OrderDetail;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -71,5 +72,21 @@ public class ItemController implements ItemService {
             itemObservableList.add(item.getCode());
         });
         return itemObservableList;
+    }
+
+
+    public boolean updateStock(List<OrderDetail> orderDetails){
+        for (OrderDetail orderDetail: orderDetails){
+            boolean isUpdateStock = updateStock(orderDetail);
+            if (!isUpdateStock){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean updateStock(OrderDetail orderDetail){
+        String SQL="UPDATE item SET qtyOnHand=qtyOnHnad-? WHERE code=?";
+        return true;
     }
 }

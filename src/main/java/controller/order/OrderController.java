@@ -8,20 +8,22 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class OrderController {
-    public boolean placeOrder(Order order){
-        String SQL ="INSERT INTO orders VALUES(?,?,?)";
+    public boolean placeOrder(Order order) {
+        String SQL = "INSERT INTO orders VALUES(?,?,?)";
 
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement psTm = connection.prepareStatement(SQL);
-            psTm.setObject(1,order.getId());
-            psTm.setObject(2,order.getDate());
-            psTm.setObject(1,order.getCustomerId());
+            psTm.setObject(1, order.getId());
+            psTm.setObject(2, order.getDate());
+            psTm.setObject(1, order.getCustomerId());
             boolean isOrderAdd = psTm.executeUpdate() > 0;
 
-            if (isOrderAdd){
-                boolean addOrderDetail = new OrderDetailController().addOrderDetail(order.getOrderDetails());
-                System.out.println(addOrderDetail);
+            if (isOrderAdd) {
+                boolean isOrderDetailAdd = new OrderDetailController().addOrderDetail(order.getOrderDetails());
+                if (isOrderDetailAdd) {
+
+                }
             }
 
         } catch (SQLException e) {

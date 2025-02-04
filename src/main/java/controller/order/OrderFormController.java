@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,18 +22,23 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import model.CartTM;
 import model.Customer;
+import model.Order;
+import model.OrderDetail;
 
 
 import java.net.URL;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class OrderFormController implements Initializable {
 
+    public JFXTextField txtOrderId;
     @FXML
     private JFXComboBox cmbCustomerId;
 
@@ -61,9 +67,6 @@ public class OrderFormController implements Initializable {
     private Label lblNetTotal;
 
     @FXML
-    private JFXTextField lblOrderId;
-
-    @FXML
     private Label lblTime;
 
     @FXML
@@ -87,7 +90,7 @@ public class OrderFormController implements Initializable {
     @FXML
     private JFXTextField txtStock;
 
-    ObservableList<CartTM> cardObservableList = FXCollections.observableArrayList();
+    ObservableList<CartTM> cartTMS = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -121,7 +124,7 @@ public class OrderFormController implements Initializable {
         txtPrice.setText(item.getUnitPrice().toString());
     }
 
-    private void loadItemCodes()  {
+    private void loadItemCodes() {
         cmbItemCode.setItems(new ItemController().getItemCodes());
     }
 
@@ -140,16 +143,16 @@ public class OrderFormController implements Initializable {
         Integer qtyOnHand = Integer.parseInt(txtQty.getText());
         Double total = unitPrice * qtyOnHand;
 
-        cardObservableList.add(new CartTM(code, description, qtyOnHand, unitPrice, total));
+        cartTMS.add(new CartTM(code, description, qtyOnHand, unitPrice, total));
 
-        tblCart.setItems(cardObservableList);
+        tblCart.setItems(cartTMS);
         calcNetTotal();
     }
 
     private void calcNetTotal() {
         Double netTotal = 0.0;
 
-        for (CartTM tm : cardObservableList) {
+        for (CartTM tm : cartTMS) {
             netTotal += tm.getTotal();
         }
 
@@ -157,7 +160,29 @@ public class OrderFormController implements Initializable {
     }
 
     @FXML
-    void btnPlaceOrderOnAction(ActionEvent event) { 
+    void btnPlaceOrderOnAction(ActionEvent event) {
+        String orderId = txtOrderId.getText();
+        String date = lblDate.getText();
+        String customerId = cmbCustomerId.getValue().toString();
+
+        List<OrderDetail> orderDetails = new ArrayList<>();
+
+        cartTMS.forEach(cartTM -> {
+            orderDetails.add(new OrderDetail(
+                    orderId,
+                    cartTM.getItemCode(),
+                    cartTM.getQtyOnHand(),
+                    cartTM.getUnitPrice()
+            ));
+        });
+
+        Order order = new Order(orderId, date, customerId, orderDetails);
+
+        if (new OrderController().placeOrder(order)){
+            new Alert(Alert.AlertType.INFORMATION,"Order Placed!!!");
+        }else {
+            new Alert(Alert.AlertType.ERROR,"Order Not Placed!!!");
+        }
 
     }
 
