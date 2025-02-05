@@ -20,7 +20,7 @@ public class OrderDetailController {
     }
 
     public boolean addOrderDetail(OrderDetail orderDetail) {
-        String SQL = "INSERT INTO orderdetail VALUES(?,?,?)";
+        String SQL = "INSERT INTO orderdetail VALUES(?,?,?,?)";
 
         try {
             Connection connection = DBConnection.getInstance().getConnection();
