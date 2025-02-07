@@ -1,10 +1,11 @@
-package controller.customer;
+package service.custom;
 
 import model.Customer;
+import service.SuperBo;
 
 import java.util.List;
 
-public interface CustomerService {
+public interface CustomerBo extends SuperBo {
     boolean addCustomer(Customer customer);
 
     boolean updateCustomer(Customer customer);

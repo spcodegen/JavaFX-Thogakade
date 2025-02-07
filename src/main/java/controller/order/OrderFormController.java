@@ -2,7 +2,6 @@ package controller.order;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import controller.customer.CustomerController;
 import controller.item.Item;
 import controller.item.ItemController;
 import db.DBConnection;
@@ -25,6 +24,7 @@ import model.CartTM;
 import model.Customer;
 import model.Order;
 import model.OrderDetail;
+import service.custom.impl.CustomerBoImpl;
 
 
 import java.net.URL;
@@ -132,7 +132,7 @@ public class OrderFormController implements Initializable {
     }
 
     private void searchCustomerData(String customerId) {
-        Customer customer = new CustomerController().searchCustomer(customerId);
+        Customer customer = new CustomerBoImpl().searchCustomer(customerId);
         txtName.setText(customer.getName());
         txtAddress.setText(customer.getAddress());
     }
@@ -212,7 +212,7 @@ public class OrderFormController implements Initializable {
     }
 
     private void loadCustomerIds() {
-        ObservableList<String> customerIds = new CustomerController().getCustomerIds();
+        ObservableList<String> customerIds = new CustomerBoImpl().getCustomerIds();
         cmbCustomerId.setItems(customerIds);
     }
 
