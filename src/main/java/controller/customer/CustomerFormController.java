@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
@@ -112,9 +113,18 @@ public class CustomerFormController {
     public void btnGetCustomerReportOnAction(ActionEvent actionEvent) {
         try {
             JasperDesign design = JRXmlLoader.load("src/main/resources/report/customer_report.jrxml");
+
+            JRDesignQuery jrDesignQuery = new JRDesignQuery();
+            jrDesignQuery.setText("SELECT * FROM customer WHERE id='C001'");
+            design.setQuery(jrDesignQuery);
+
             JasperReport jasperReport = JasperCompileManager.compileReport(design);
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
-            JasperViewer.viewReport(jasperPrint);
+            JasperExportManager.exportReportToPdfFile(jasperPrint,"customer_report.pdf");
+
+            JasperViewer.viewReport(jasperPrint,false);
+
+
 
         } catch (JRException | SQLException e) {
             throw new RuntimeException(e);
