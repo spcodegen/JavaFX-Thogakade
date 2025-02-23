@@ -17,7 +17,8 @@ public class DBConnection {
     private DBConnection() throws SQLException {
         String URL="jdbc:mysql://localhost:3306/thogakade";
         String user="root";
-        String pass="1234";
+        //String pass="1234";
+        String pass="qRs52$@lfaQ12";
         connection = DriverManager.getConnection(URL, user, pass);
     }
 
