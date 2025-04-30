@@ -1,5 +1,6 @@
 package controller.customer;
 
+import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,11 +11,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customer;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import service.BoFactory;
 import service.custom.CustomerBo;
 import service.custom.impl.CustomerBoImpl;
 import util.BoType;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class CustomerFormController {
@@ -48,7 +55,7 @@ public class CustomerFormController {
 
     private List<Customer> customerList;
 
-    CustomerBo customerBo= BoFactory.getInstance().getBoType(BoType.CUSTOMER);
+    CustomerBo customerBo = BoFactory.getInstance().getBoType(BoType.CUSTOMER);
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
@@ -60,10 +67,10 @@ public class CustomerFormController {
                         Double.parseDouble(txtSalary.getText())
                 )
         );
-        if (isCustomerAdd){
-            new Alert(Alert.AlertType.INFORMATION,"Customer Added!!!").show();
-        }else{
-            new Alert(Alert.AlertType.ERROR,"Customer Not Added!!!").show();
+        if (isCustomerAdd) {
+            new Alert(Alert.AlertType.INFORMATION, "Customer Added!!!").show();
+        } else {
+            new Alert(Alert.AlertType.ERROR, "Customer Not Added!!!").show();
         }
     }
 
@@ -103,4 +110,24 @@ public class CustomerFormController {
 
     }
 
+    public void btnGetCustomerReportOnAction(ActionEvent actionEvent) {
+        try {
+            JasperDesign design = JRXmlLoader.load("src/main/resources/report/customer_report.jrxml");
+
+            JRDesignQuery jrDesignQuery = new JRDesignQuery();
+            jrDesignQuery.setText("SELECT * FROM customer WHERE id='C001'");
+            design.setQuery(jrDesignQuery);
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(design);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperExportManager.exportReportToPdfFile(jasperPrint,"customer_report.pdf");
+
+            JasperViewer.viewReport(jasperPrint,false);
+
+
+
+        } catch (JRException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
